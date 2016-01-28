@@ -144,7 +144,7 @@ public class Proxy {
             rUsers[i] = new ProxyUser(
                 this.proxyServerInfo,
                 this.mediaDeviceChooser,
-                this.nickname+"_"+i,
+                this.proxynickname+"_"+i,
                 false);
         }
         
