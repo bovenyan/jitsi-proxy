@@ -12,6 +12,9 @@ import net.java.sip.communicator.launcher.ChangeJVMFrame;
 
 //import org.jitsi.hammer.utils.*;
 import org.jitsi.proxy.utils.MediaDeviceChooser;
+//import net.java.sip.communicator.util.ScStdOut;
+
+import org.jitsi.proxy.utils.*;
 import org.kohsuke.args4j.*;
 
 /**
@@ -251,8 +254,6 @@ public class Main
         //We call initialize the Proxy (registering OSGi bundle for example)
         Proxy.init();
 
-        ProxyInfo proxyInfo = infoCLI.getHostInfoFromArguments();
-
         int numberOfLUsers = infoCLI.getNumberOfLusers();
         int numberOfRUsers = infoCLI.getNumberOfRusers();
         
@@ -272,24 +273,29 @@ public class Main
         // List<Credential> credentials = infoCLI.getCredentialsList();
         // if(credentials.size() > 0) numberOfFakeUsers = credentials.size();
 
-
-        final Proxy proxy = new Proxy(
-            proxyInfo,
-            mdc,
-            "Jitsi-LUsers",
-            "Jitsi-RUsers",
-            numberOfLUsers,
-            numberOfRUsers);
-
-
         /**
          * 
-         * @author Haoqin
          * 
          * TODO: Need to check whether to cleanly stop the proxy when the program
          * shutdown.
          *  
          */
+        HostInfo hostInfo = infoCLI.getHostInfoFromArguments();
+        HostInfo proxyHostInfo = infoCLI.getProxyHostInfoFromArguments();
+
+        int numberOfLusers = infoCLI.getNumberOfLusers();
+        int numberOfRusers = infoCLI.getNumberOfRusers();
+        
+        final Proxy proxy = new Proxy(
+            hostInfo,
+            proxyHostInfo,
+            mdc,
+            "Jitsi-Proxy",
+            numberOfLusers,
+            numberOfRusers);
+
+
+        //Cleanly stop the proxy when the program shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
         {
             public void run()
@@ -318,6 +324,10 @@ public class Main
         //        infoCLI.getAllStats(),
         //        infoCLI.getSummaryStats(),
         //        infoCLI.getStatsPolling());
+
+        //After the initialization we start the Hammer (all its users will
+        //connect to the XMPP server and try to setup media stream with it bridge
+        proxy.start(infoCLI.getInterval());
 
         if(infoCLI.getRunLength() > 0)
         {

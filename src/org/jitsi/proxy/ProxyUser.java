@@ -1,3 +1,5 @@
+package org.jitsi.proxy;
+
 /*
  * Copyright @ 2015 Atlassian Pty Ltd
  *
@@ -14,9 +16,6 @@
  * limitations under the License.
  */
 
-package org.jitsi.proxy;
-
-
 import org.jivesoftware.smack.*;
 import org.jivesoftware.smackx.ServiceDiscoveryManager;
 import org.jivesoftware.smackx.muc.*;
@@ -27,9 +26,9 @@ import org.ice4j.ice.*;
 import org.jitsi.service.neomedia.*;
 import org.jitsi.service.neomedia.format.*;
 import org.jitsi.util.Logger;
-import org.jitsi.proxy.stats.*;
 import org.jitsi.proxy.utils.*;
-import org.jitsi.proxy.extension.*;
+import org.jitsi.hammer.extension.*;
+import org.jitsi.hammer.stats.FakeUserStats;
 
 import net.java.sip.communicator.impl.protocol.jabber.jinglesdp.*;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.*;
@@ -43,6 +42,7 @@ import java.util.*;
 
 /**
  *
+ * @author Thomas Kuntz
  *
  * <tt>FakeUser</tt> represent a Jingle,ICE and RTP/RTCP session with
  * jitsi-videobridge : it simulate a jitmeet user by setting up an
@@ -50,14 +50,14 @@ import java.util.*;
  * to the videobridge.
  *
  */
-public class FakeUser implements PacketListener
+public class ProxyUser implements PacketListener
 {
     /**
      * The <tt>Logger</tt> used by the <tt>FakeUser</tt> class and its
      * instances for logging output.
      */
     private static final Logger logger
-        = Logger.getLogger(FakeUser.class);
+        = Logger.getLogger(ProxyUser.class);
 
     /**
      * The XMPP server info to which this <tt>FakeUser</tt> will
@@ -171,7 +171,8 @@ public class FakeUser implements PacketListener
      * once (during the jingle accept).
      */
     private Packet presencePacketWithSSRC;
-
+    
+    
     /**
      * The <tt>FakeUserStats</tt> that represents the stats of the streams of
      * this <tt>FakeUser</tt>
@@ -187,16 +188,12 @@ public class FakeUser implements PacketListener
      * <tt>FakeUser</tt> to choose the <tt>MediaDevice</tt> for each of its
      * <tt>MediaStream</tt>s.
      */
-    public FakeUser(
+    public ProxyUser(
         HostInfo hostInfo,
         MediaDeviceChooser mdc)
     {
         this(hostInfo, mdc, null, true);
     }
-    
-    public FakeUser(HostInfo serverInfo, MediaDeviceChooser mdc, String basename) {
-		this(serverInfo, mdc, basename, false);
-	}
 
     /**
      * Instantiates a <tt>FakeUser</tt> with a specified <tt>nickname</tt>
@@ -210,7 +207,7 @@ public class FakeUser implements PacketListener
      * connection.
      *
      */
-    public FakeUser(
+    public ProxyUser(
         HostInfo hostInfo,
         MediaDeviceChooser mdc,
         String nickname,
@@ -231,7 +228,7 @@ public class FakeUser implements PacketListener
      * connection.
      * @param smackDebug the boolean activating or not the debug screen of smack
      */
-    public FakeUser(
+    public ProxyUser(
         HostInfo hostInfo,
         MediaDeviceChooser mdc,
         String nickname,
@@ -262,7 +259,7 @@ public class FakeUser implements PacketListener
          * Creation in advance of the MediaStream that will be used later
          * so the HammerStats can register their MediaStreamStats now.
          */
-        mediaStreamMap = HammerUtils.createMediaStreams();
+        mediaStreamMap = ProxyUtils.createMediaStreams();
         if (fakeUserStats != null)
         {
             fakeUserStats.setMediaStreamStats(
@@ -285,7 +282,7 @@ public class FakeUser implements PacketListener
 
     }
 
-	/**
+    /**
      * Connect to the XMPP server, login anonymously then join the MUC chatroom.
      * @throws XMPPException if the connection to the XMPP server goes wrong
      */
@@ -429,7 +426,7 @@ public class FakeUser implements PacketListener
             //differently than the other MediaType
             if(cpe.getName().equalsIgnoreCase("data"))
             {
-                content = HammerUtils.createDescriptionForDataContent(
+                content = ProxyUtils.createDescriptionForDataContent(
                     CreatorEnum.responder,
                     SendersEnum.both);
             }
@@ -460,7 +457,7 @@ public class FakeUser implements PacketListener
 
                 selectedFormat.put(
                     cpe.getName(),
-                    HammerUtils.selectFormat(cpe.getName(),listFormat));
+                    ProxyUtils.selectFormat(cpe.getName(),listFormat));
 
                 selectedRtpExtension.put(
                     cpe.getName(),
@@ -504,10 +501,10 @@ public class FakeUser implements PacketListener
 
         //Add the remote candidate to my agent, and add my local candidate of
         //my stream to the content list of the future session-accept
-        HammerUtils.addRemoteCandidateToAgent(
+        ProxyUtils.addRemoteCandidateToAgent(
             agent,
             sessionInitiate.getContentList());
-        HammerUtils.addLocalCandidateToContentList(
+        ProxyUtils.addLocalCandidateToContentList(
             agent,
             contentMap.values());
 
@@ -519,7 +516,7 @@ public class FakeUser implements PacketListener
          * selected MediaFormat, and with the selected MediaDevice (through the
          * MediaDeviceChooser.
          */
-        HammerUtils.configureMediaStream(
+        ProxyUtils.configureMediaStream(
             mediaStreamMap,
             selectedFormat,
             selectedRtpExtension,
@@ -529,7 +526,7 @@ public class FakeUser implements PacketListener
 
         //Now that the MediaStream are created, I can add their SSRC to the
         //content list of the future session-accept
-        HammerUtils.addSSRCToContent(contentMap, mediaStreamMap);
+        ProxyUtils.addSSRCToContent(contentMap, mediaStreamMap);
 
 
         /*
@@ -578,7 +575,7 @@ public class FakeUser implements PacketListener
 
         //Set the remote fingerprint on my streams and add the fingerprints
         //of my streams to the content list of the session-accept
-        HammerUtils.setDtlsEncryptionOnTransport(
+        ProxyUtils.setDtlsEncryptionOnTransport(
             mediaStreamMap,
             sessionAccept.getContentList(),
             sessionInitiate.getContentList());
@@ -606,7 +603,7 @@ public class FakeUser implements PacketListener
                     Agent iceAgent = (Agent) ev.getSource();
 
                     iceAgent.removeStateChangeListener(this);
-                    if (iceAgent == FakeUser.this.agent)
+                    if (iceAgent == ProxyUser.this.agent)
                     {
                         synchronized (syncRoot)
                         {
@@ -661,7 +658,7 @@ public class FakeUser implements PacketListener
         // Add socket created by ice4j to their associated MediaStreams
         // We drop incoming RTP packets when statistics are disabled in order
         // to improve performance.
-        HammerUtils.addSocketToMediaStream(agent,
+        ProxyUtils.addSocketToMediaStream(agent,
                                            mediaStreamMap,
                                            fakeUserStats == null);
 

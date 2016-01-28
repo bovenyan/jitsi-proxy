@@ -59,6 +59,7 @@
             srcdir="src"
             target="1.6">
             <exclude name="net/java/sip/communicator/launcher/SIPCommunicator.java" />
+            <exclude name="org/jitsi/proxy/Content.java" />
         </javac>
     </target>
 

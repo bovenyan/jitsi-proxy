@@ -30,7 +30,7 @@ else
 	fi
 fi
 
-mainClass="org.jitsi.hammer.Main"
+mainClass="org.jitsi.proxy.Main"
 classpath=$(JARS=($SCRIPT_DIR/jitsi-proxy.jar $SCRIPT_DIR/lib/*.jar); IFS=:; echo "${JARS[*]}")
 libs="$SCRIPT_DIR/lib/native/$architecture"
 logging_config="$SCRIPT_DIR/lib/logging.properties"

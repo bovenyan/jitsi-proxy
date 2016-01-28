@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import org.jitsi.hammer.utils.*;
-import org.jitsi.proxy.utils.MediaDeviceChooser;
+import org.jitsi.proxy.utils.*;
 import org.kohsuke.args4j.*;
 
 /**
@@ -136,11 +135,15 @@ public class CmdLineArguments
      * Create a ProxyInfo from the CLI options
      * @return a HostInfo created from the CLI options
      */
-    public ProxyInfo getHostInfoFromArguments()
+    public HostInfo getHostInfoFromArguments(){
+    	return new HostInfo(XMPPdomain, XMPPhost, 
+        		port, MUCdomain, roomName);
+    }
+    
+    public HostInfo getProxyHostInfoFromArguments()
     {
-        return new ProxyInfo(XMPPdomain, ProxyXMPPdomain, 
-        		XMPPhost, ProxyXMPPhost, port, 
-        		MUCdomain, ProxyMUCdomain, roomName);
+        return new HostInfo(ProxyXMPPdomain, ProxyXMPPdomain, 
+        		port, ProxyXMPPdomain, roomName);
     }
 
     /**
