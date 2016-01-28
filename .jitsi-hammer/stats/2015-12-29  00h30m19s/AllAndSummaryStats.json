@@ -1,0 +1,80 @@
+[
+
+{
+  "timestamp":1451367021453,
+  "summary":
+  {
+    "max":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "mean":
+    {
+       "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "min":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "standard_deviation":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    }
+  }
+},
+{
+  "timestamp":1451367026459,
+  "summary":
+  {
+    "max":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "mean":
+    {
+       "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "min":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "standard_deviation":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    }
+  }
+},
+{
+  "timestamp":1451367031467,
+  "summary":
+  {
+    "max":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "mean":
+    {
+       "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "min":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    },
+    "standard_deviation":
+    {
+        "audio":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN },
+        "video":{ "ssrc":-1 , "DownloadJitterMs":NaN , "DownloadPercentLoss":NaN , "DownloadRateKiloBitPerSec":NaN , "JitterBufferDelayMs":NaN , "JitterBufferDelayPackets":NaN , "NbDiscarded":NaN , "NbDiscardedFull":NaN , "NbDiscardedLate":NaN , "NbDiscardedReset":NaN , "NbDiscardedShrink":NaN , "NbFec":NaN , "NbPackets":NaN , "NbPacketsLost":NaN , "NbReceivedBytes":NaN , "NbSentBytes":NaN , "PacketQueueCountPackets":NaN , "PacketQueueSize":NaN , "PercentDiscarded":NaN , "RttMs":NaN , "UploadJitterMs":NaN , "UploadPercentLoss":NaN , "UploadRateKiloBitPerSec":NaN }
+    }
+  }
+}]
