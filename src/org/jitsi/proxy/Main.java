@@ -1,7 +1,5 @@
 package org.jitsi.proxy;
 
-
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
@@ -9,11 +7,10 @@ import java.util.List;
 
 import net.java.sip.communicator.launcher.ChangeJVMFrame;
 
-import org.jitsi.hammer.*;
+import org.jitsi.proxy.*;
 //import net.java.sip.communicator.util.ScStdOut;
 
-import org.jitsi.hammer.utils.*;
-import org.jitsi.proxy.utils.MediaDeviceChooser;
+import org.jitsi.proxy.utils.*;
 import org.kohsuke.args4j.*;
 
 /**
@@ -235,7 +232,7 @@ public class Main
             {
                 System.out.println(e.getMessage() + '\n');
             }
-            System.out.println("Jitsi-Hammer options usage :");
+            System.out.println("Jitsi-Proxy options usage :");
             parser.printUsage(System.out);
             System.exit(1);
         }
@@ -250,8 +247,8 @@ public class Main
             System.exit(1);
         }
 
-        //We call initialize the Hammer (registering OSGi bundle for example)
-        Hammer.init();
+        //We call initialize the Proxy (registering OSGi bundle for example)
+        Proxy.init();
 
         HostInfo hostInfo = infoCLI.getHostInfoFromArguments();
         HostInfo proxyHostInfo = infoCLI.getProxyHostInfoFromArguments();

@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import org.jitsi.hammer.utils.*;
-import org.jitsi.proxy.utils.MediaDeviceChooser;
+import org.jitsi.proxy.utils.*;
 import org.kohsuke.args4j.*;
 
 /**

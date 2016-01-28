@@ -119,8 +119,10 @@ public class Proxy {
     public Proxy(HostInfo host, HostInfo proxyHost, MediaDeviceChooser mdc, 
     		String nickname, int numberOfLuser, int numberOfRuser)
     {
-        this.nickname = nickname;
+        this.nickname = nickname+"_L";
+        this.proxynickname = nickname+"_R";
         this.serverInfo = host;
+        this.proxyServerInfo = proxyHost;
         this.mediaDeviceChooser = mdc;
         lUsers = new ProxyUser[numberOfLuser];
         rUsers = new ProxyUser[numberOfRuser];
@@ -136,10 +138,10 @@ public class Proxy {
         }
         
         // construct rUsers
-        for(int i = 0; i<lUsers.length; i++)
+        for(int i = 0; i<rUsers.length; i++)
         {
-            lUsers[i] = new ProxyUser(
-                this.serverInfo,
+            rUsers[i] = new ProxyUser(
+                this.proxyServerInfo,
                 this.mediaDeviceChooser,
                 this.nickname+"_"+i,
                 false);
