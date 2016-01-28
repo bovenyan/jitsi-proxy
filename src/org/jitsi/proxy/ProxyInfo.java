@@ -1,4 +1,4 @@
-package org.jitsi.proxy.utils;
+package org.jitsi.proxy;
 
 /*
  * Copyright @ 2015 AT&T
