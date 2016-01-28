@@ -1,6 +1,6 @@
-#Jitsi-Hammer
+#Jitsi-Proxy
 
-A traffic generator for Jitsi Videobridge.
+A traffic proxy between Jitsi Videobridge.
 
 Jitsi-Hammer is a program that connects to a Jitsi-Meet conference, creates fake users, and generates RTP traffic for these fake users.  
 **This means that you need to run the program after using Jitsi-Meet : Jitsi-Hammer needs an initiator that will manage the video conference and Jingle protocol,
