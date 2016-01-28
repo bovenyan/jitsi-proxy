@@ -1,7 +1,5 @@
 package org.jitsi.proxy;
 
-
-
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
@@ -9,20 +7,20 @@ import java.util.List;
 
 import net.java.sip.communicator.launcher.ChangeJVMFrame;
 
-import org.jitsi.hammer.*;
+//import org.jitsi.hammer.*;
 //import net.java.sip.communicator.util.ScStdOut;
 
-import org.jitsi.hammer.utils.*;
+//import org.jitsi.hammer.utils.*;
 import org.jitsi.proxy.utils.MediaDeviceChooser;
 import org.kohsuke.args4j.*;
 
 /**
  *
- * @author Thomas Kuntz
  *
- * This class contains the Main method used to launch jitsi-hammer.
- * A lot of code is copied from the SIPCommunicator.java Main
- * method, because jitsi-hammer use a lot of the same configuration that Jitsi.
+ * This class contains the Main method used to launch jitsi-proxy.
+ * A lot of code is copied from the SIPCommunicator.java Main and Jitsi-Hammer
+ * Main method, because jitsi-proxy use a lot of the same configuration that
+ * Jitsi and Jitsi-Hammer.
  */
 public class Main
 {
@@ -80,7 +78,7 @@ public class Main
             || name == null)
         {
             String defaultLocation = System.getProperty("user.home");
-            String defaultName = ".Jitsi-Hammer";
+            String defaultName = ".Jitsi-Proxy";
 
             if (osName.startsWith("Mac"))
             {
@@ -91,7 +89,7 @@ public class Main
                     + "Application Support";
 
                 if (name == null)
-                    name = "Jitsi-Hammer";
+                    name = "Jitsi-Proxy";
             }
             else if (osName.startsWith("Windows"))
             {
@@ -104,7 +102,7 @@ public class Main
                 if (profileLocation == null)
                     profileLocation = System.getenv("APPDATA");
                 if (name == null)
-                    name = "Jitsi-Hammer";
+                    name = "Jitsi-Proxy";
             }
 
             /* If there're no OS specifics, use the defaults. */
@@ -235,7 +233,7 @@ public class Main
             {
                 System.out.println(e.getMessage() + '\n');
             }
-            System.out.println("Jitsi-Hammer options usage :");
+            System.out.println("Jitsi-Proxy options usage :");
             parser.printUsage(System.out);
             System.exit(1);
         }
@@ -250,48 +248,76 @@ public class Main
             System.exit(1);
         }
 
-        //We call initialize the Hammer (registering OSGi bundle for example)
-        Hammer.init();
+        //We call initialize the Proxy (registering OSGi bundle for example)
+        Proxy.init();
 
-        HostInfo hostInfo = infoCLI.getHostInfoFromArguments();
+        ProxyInfo proxyInfo = infoCLI.getHostInfoFromArguments();
+
+        int numberOfLUsers = infoCLI.getNumberOfLusers();
+        int numberOfRUsers = infoCLI.getNumberOfRusers();
+        
+        // TODO: Remove MediaDeviceChooser if it's not necessary. --Haoqin
+        
         MediaDeviceChooser mdc = infoCLI.getMediaDeviceChooser();
+        
+        /**
+         * @author Haoqin
+         * 
+         * "Credentials" is a list of credential information of users, which can
+         * help Jitsi-Hammer log into conference as a user. I assume we don't need
+         * it here. Modification needed if incorrect.
+         * 
+         */
+        
+        // List<Credential> credentials = infoCLI.getCredentialsList();
+        // if(credentials.size() > 0) numberOfFakeUsers = credentials.size();
 
-        int numberOfFakeUsers = infoCLI.getNumberOfFakeUsers();
-        List<Credential> credentials = infoCLI.getCredentialsList();
-        if(credentials.size() > 0) numberOfFakeUsers = credentials.size();
 
-
-        final Hammer hammer = new Hammer(
-            hostInfo,
+        final Proxy proxy = new Proxy(
+            proxyInfo,
             mdc,
-            "Jitsi-Hammer",
-            numberOfFakeUsers);
+            "Jitsi-LUsers",
+            "Jitsi-RUsers",
+            numberOfLUsers,
+            numberOfRUsers);
 
 
-        //Cleanly stop the hammer when the program shutdown
+        /**
+         * 
+         * @author Haoqin
+         * 
+         * TODO: Need to check whether to cleanly stop the proxy when the program
+         * shutdown.
+         *  
+         */
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()
         {
             public void run()
             {
-                System.out.println("Stopping Jitsi-Hammer...");
+                System.out.println("Stopping Jitsi-Proxy...");
 
-                hammer.stop();
+                proxy.stop();
 
                 System.out.println("Exiting the program...");
             }
         }));
 
-
-        //After the initialization we start the Hammer (all its users will
-        //connect to the XMPP server and try to setup media stream with it bridge
-        hammer.start(
-                infoCLI.getInterval(),
-                infoCLI.getDisableStats(),
-                (credentials.size() > 0) ? credentials : null,
-                infoCLI.getOverallStats(),
-                infoCLI.getAllStats(),
-                infoCLI.getSummaryStats(),
-                infoCLI.getStatsPolling());
+        // Lots of arguments assumed unnecessary for Proxy. The complete version
+        // is reserved as comments below.
+        proxy.start(
+                infoCLI.getInterval());
+        
+        //After the initialization we start the Proxy (all its users will
+        //connect to 2 XMPP servers and try to setup media stream with their
+        //bridge
+        //hammer.start(
+        //        infoCLI.getInterval(),
+        //        infoCLI.getDisableStats(),
+        //        (credentials.size() > 0) ? credentials : null,
+        //        infoCLI.getOverallStats(),
+        //        infoCLI.getAllStats(),
+        //        infoCLI.getSummaryStats(),
+        //        infoCLI.getStatsPolling());
 
         if(infoCLI.getRunLength() > 0)
         {

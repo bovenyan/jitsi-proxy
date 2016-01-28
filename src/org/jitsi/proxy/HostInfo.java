@@ -1,5 +1,3 @@
-package org.jitsi.proxy;
-
 /*
  * Copyright @ 2015 AT&T
  *
@@ -16,35 +14,34 @@ package org.jitsi.proxy;
  * limitations under the License.
  */
 
+package org.jitsi.proxy;
+
 /**
- * The class contains an number of information about the proxy server.
+ * The class contains an number of information about the host server.
  * 
- * The XMPPdomain and XMPPhost attributes will be used by LUsers as HostInfo
- * while ProxyXMPPdomain and ProxyXMPPhost will be used by RUsers as their
- * own HostInfo.
+ * This class contains part of information from ProxyInfo class to help
+ * LUsers and RUsers to act like FakeUsers perfectly in their own
+ * conferences, which means LUsers and RUsers have different hosts.
  *
- * @author Boven
+ * @author Haoqin
  */
-public class ProxyInfo
+public class HostInfo
 {
     
     /**
      * The domain name of the XMPP server.
      */
     private String XMPPdomain;
-    private String ProxyXMPPdomain;
     
     /**
      * The hostname used to access the XMPP server.
      */
     private String XMPPhost;
-    private String ProxyXMPPhost;
     
     /**
      * The hostname used by the XMPP server (used to access to the MUC).
      */
     private String MUCdomain;
-    private String ProxyMUCdomain;
     /**
      * The name of the MUC room that we'll use.
      */
@@ -59,7 +56,7 @@ public class ProxyInfo
     /**
      * Instantiates a new <tt>HostInfo</tt> instance with default attribut. 
      */
-    public ProxyInfo() {}
+    public HostInfo() {}
     
     /**
      * @arg XMPPdomain the domain name of the XMPP server.
@@ -70,24 +67,17 @@ public class ProxyInfo
      * Instantiates a new <tt>HostInfo</tt> instance
      * with all the informations needed.
      */
-
-    public ProxyInfo(
+    public HostInfo(
             String XMPPdomain,
-            String ProxyXMPPdomain,
             String XMPPhost,
-            String ProxyXMPPhost,
             int port,
             String MUCdomain,
-            String ProxyMUCdomain,
             String roomName)
     {
-    	this.XMPPdomain = XMPPdomain;
-    	this.ProxyXMPPdomain = ProxyXMPPdomain;
+        this.XMPPdomain = XMPPdomain;
         this.port = port;
         this.XMPPhost = XMPPhost;
-        this.ProxyXMPPhost = ProxyXMPPhost;
         this.MUCdomain = MUCdomain;
-        this.ProxyMUCdomain = ProxyMUCdomain;
         this.roomName = roomName;
     }
     
@@ -101,10 +91,6 @@ public class ProxyInfo
         return this.XMPPdomain.toLowerCase();
     }
     
-    public String getXMPPProxy(){
-    	return this.ProxyXMPPdomain.toLowerCase();
-    }
-    
     /**
      * Get the domain of the MUC server of this <tt>HostInfo</tt>
      * (in lower case).
@@ -115,11 +101,6 @@ public class ProxyInfo
         return this.MUCdomain.toLowerCase();
     }
 
-    public String getProxyMUCDomain()
-    {
-        return this.ProxyMUCdomain.toLowerCase();
-    }
-
     /**
      * Get the hostname of the XMPP server of this <tt>HostInfo</tt>
      * (in lower case).
@@ -128,11 +109,6 @@ public class ProxyInfo
     public String getXMPPHostname()
     {
         return this.XMPPhost.toLowerCase();
-    }
-
-    public String getProxyXMPPHostname()
-    {
-        return this.ProxyXMPPhost.toLowerCase();
     }
     
     /**
