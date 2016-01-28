@@ -254,18 +254,20 @@ public class Main
         Hammer.init();
 
         HostInfo hostInfo = infoCLI.getHostInfoFromArguments();
+        HostInfo proxyHostInfo = infoCLI.getProxyHostInfoFromArguments();
+        
         MediaDeviceChooser mdc = infoCLI.getMediaDeviceChooser();
 
-        int numberOfFakeUsers = infoCLI.getNumberOfFakeUsers();
-        List<Credential> credentials = infoCLI.getCredentialsList();
-        if(credentials.size() > 0) numberOfFakeUsers = credentials.size();
-
-
-        final Hammer hammer = new Hammer(
+        int numberOfLusers = infoCLI.getNumberOfLusers();
+        int numberOfRusers = infoCLI.getNumberOfRusers();
+        
+        final Proxy proxy = new Proxy(
             hostInfo,
+            proxyHostInfo,
             mdc,
-            "Jitsi-Hammer",
-            numberOfFakeUsers);
+            "Jitsi-Proxy",
+            numberOfLusers,
+            numberOfRusers);
 
 
         //Cleanly stop the hammer when the program shutdown
@@ -273,9 +275,9 @@ public class Main
         {
             public void run()
             {
-                System.out.println("Stopping Jitsi-Hammer...");
+                System.out.println("Stopping Jitsi-Proxy...");
 
-                hammer.stop();
+                proxy.stop();
 
                 System.out.println("Exiting the program...");
             }
@@ -284,14 +286,7 @@ public class Main
 
         //After the initialization we start the Hammer (all its users will
         //connect to the XMPP server and try to setup media stream with it bridge
-        hammer.start(
-                infoCLI.getInterval(),
-                infoCLI.getDisableStats(),
-                (credentials.size() > 0) ? credentials : null,
-                infoCLI.getOverallStats(),
-                infoCLI.getAllStats(),
-                infoCLI.getSummaryStats(),
-                infoCLI.getStatsPolling());
+        proxy.start(infoCLI.getInterval());
 
         if(infoCLI.getRunLength() > 0)
         {
