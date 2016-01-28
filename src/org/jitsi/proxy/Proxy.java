@@ -140,6 +140,7 @@ public class Proxy {
         // construct rUsers
         for(int i = 0; i<rUsers.length; i++)
         {
+        	System.out.println("Boven: ProxyInfo " + this.proxyServerInfo.toString());
             rUsers[i] = new ProxyUser(
                 this.proxyServerInfo,
                 this.mediaDeviceChooser,
@@ -280,17 +281,19 @@ public class Proxy {
     
     private void startUsersAnonymous(int wait)
     {
-        logger.info("Starting the Hammer : starting all "
-                            + "FakeUsers with anonymous login");
+        logger.info("Starting the Proxy : starting all "
+                            + "ProxyUser with anonymous login");
         try
         {
             for(ProxyUser user : lUsers)
             {
+            	System.out.println("Boven: The lUsers are starting....");
                 user.start();
                 Thread.sleep(wait);
             }
             for(ProxyUser user : rUsers)
             {
+            	System.out.println("Boven: The rUsers are starting....");
             	user.start();
             	Thread.sleep(wait);
             }
@@ -315,11 +318,11 @@ public class Proxy {
     {
         if (!this.started)
         {
-            logger.warn("Hammer already stopped !");
+            logger.warn("Proxy already stopped !");
             return;
         }
 
-        logger.info("Stoppig the Hammer : stopping all ProxyUsers");
+        logger.info("Stoppig the Proxy : stopping all ProxyUsers");
         for(ProxyUser lUser : lUsers)
         {
         	lUser.stop();
@@ -334,10 +337,9 @@ public class Proxy {
          * Stop the thread of the HammerStats, without using the Thread
          * instance hammerStatsThread, to allow it to cleanly stop.
          */
-        logger.info("Stopping the HammerStats and waiting for its thread to return");
 
         this.started = false;
-        logger.info("The Hammer has been correctly stopped");
+        logger.info("The Proxy has been correctly stopped");
     }
     
 }

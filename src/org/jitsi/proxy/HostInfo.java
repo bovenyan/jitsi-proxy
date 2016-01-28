@@ -27,19 +27,16 @@ public class HostInfo
      * The domain name of the XMPP server.
      */
     private String XMPPdomain;
-    private String ProxyXMPPdomain;
     
     /**
      * The hostname used to access the XMPP server.
      */
     private String XMPPhost;
-    private String ProxyXMPPhost;
     
     /**
      * The hostname used by the XMPP server (used to access to the MUC).
      */
     private String MUCdomain;
-    private String ProxyMUCdomain;
     /**
      * The name of the MUC room that we'll use.
      */
@@ -79,25 +76,6 @@ public class HostInfo
         this.roomName = roomName;
     }
     
-    public HostInfo(
-            String XMPPdomain,
-            String ProxyXMPPdomain,
-            String XMPPhost,
-            String ProxyXMPPhost,
-            int port,
-            String MUCdomain,
-            String ProxyMUCdomain,
-            String roomName)
-    {
-    	this.XMPPdomain = XMPPdomain;
-    	this.ProxyXMPPdomain = ProxyXMPPdomain;
-        this.port = port;
-        this.XMPPhost = XMPPhost;
-        this.ProxyXMPPhost = ProxyXMPPhost;
-        this.MUCdomain = MUCdomain;
-        this.ProxyMUCdomain = ProxyMUCdomain;
-        this.roomName = roomName;
-    }
     
     /**
      * Get the domain of the XMPP server of this <tt>HostInfo</tt>
@@ -109,10 +87,7 @@ public class HostInfo
         return this.XMPPdomain.toLowerCase();
     }
     
-    public String getXMPPProxy(){
-    	return this.ProxyXMPPdomain.toLowerCase();
-    }
-    
+
     /**
      * Get the domain of the MUC server of this <tt>HostInfo</tt>
      * (in lower case).
@@ -121,11 +96,6 @@ public class HostInfo
     public String getMUCDomain()
     {
         return this.MUCdomain.toLowerCase();
-    }
-
-    public String getProxyMUCDomain()
-    {
-        return this.ProxyMUCdomain.toLowerCase();
     }
 
     /**
@@ -138,11 +108,6 @@ public class HostInfo
         return this.XMPPhost.toLowerCase();
     }
 
-    public String getProxyXMPPHostname()
-    {
-        return this.ProxyXMPPhost.toLowerCase();
-    }
-    
     /**
      * Get the room name (to access a MUC) of this <tt>HostInfo</tt>
      * (in lower case).

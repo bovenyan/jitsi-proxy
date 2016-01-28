@@ -143,7 +143,7 @@ public class CmdLineArguments
     public HostInfo getProxyHostInfoFromArguments()
     {
         return new HostInfo(ProxyXMPPdomain, ProxyXMPPdomain, 
-        		port, ProxyXMPPdomain, roomName);
+        		port, ProxyMUCdomain, roomName);
     }
 
     /**
