@@ -9,10 +9,13 @@ import org.jivesoftware.smack.provider.*;
 
 import net.java.sip.communicator.impl.osgi.framework.launch.*;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.*;
+import net.java.sip.communicator.util.ServiceUtils;
 
 import org.jitsi.proxy.ProxyUser;
 import org.jitsi.hammer.extension.*;
 import org.jitsi.proxy.utils.MediaDeviceChooser;
+import org.jitsi.service.libjitsi.LibJitsi;
+import org.jitsi.service.neomedia.MediaService;
 import org.jitsi.util.Logger;
 
 import java.util.*;
@@ -57,7 +60,21 @@ public class Proxy {
      * <tt>FakeUser</tt> to choose their <tt>MediaDevice</tt>
      */
     private final MediaDeviceChooser mediaDeviceChooser;
-
+    
+    
+    /**
+     * TODO: These should be shared accross Proxys
+     * @return
+     */
+    MediaService getMediaService()
+    {
+    	// TODO: Use osgi to get media service
+        return LibJitsi.getMediaService();
+    }
+    
+    public static final Random RANDOM = new Random();
+    
+    
     /**
      * The <tt>org.osgi.framework.launch.Framework</tt> instance which
      * represents the OSGi instance launched by this <tt>ComponentImpl</tt>.
