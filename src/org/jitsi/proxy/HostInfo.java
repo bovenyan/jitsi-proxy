@@ -32,19 +32,16 @@ public class HostInfo
      * The domain name of the XMPP server.
      */
     private String XMPPdomain;
-    private String ProxyXMPPdomain;
     
     /**
      * The hostname used to access the XMPP server.
      */
     private String XMPPhost;
-    private String ProxyXMPPhost;
     
     /**
      * The hostname used by the XMPP server (used to access to the MUC).
      */
     private String MUCdomain;
-    private String ProxyMUCdomain;
     /**
      * The name of the MUC room that we'll use.
      */
