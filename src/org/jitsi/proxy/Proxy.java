@@ -323,11 +323,11 @@ public class Proxy {
     {
         if (!this.started)
         {
-            logger.warn("Hammer already stopped !");
+            logger.warn("Proxy already stopped !");
             return;
         }
 
-        logger.info("Stoppig the Hammer : stopping all ProxyUsers");
+        logger.info("Stoppig the Proxy : stopping all ProxyUsers");
         for(ProxyUser lUser : lUsers)
         {
         	lUser.stop();
@@ -342,9 +342,9 @@ public class Proxy {
          * Stop the thread of the HammerStats, without using the Thread
          * instance hammerStatsThread, to allow it to cleanly stop.
          */
-        logger.info("Stopping the HammerStats and waiting for its thread to return");
+//        logger.info("Stopping the HammerStats and waiting for its thread to return");
 
         this.started = false;
-        logger.info("The Hammer has been correctly stopped");
+        logger.info("The Proxy has been correctly stopped");
     }
 }
