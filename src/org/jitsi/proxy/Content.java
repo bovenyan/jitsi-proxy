@@ -139,263 +139,6 @@ public class Content
         */
     }
 
-    @Override
-    public boolean accept(
-            MediaStream source,
-            byte[] buffer, int offset, int length,
-            MediaStream destination,
-            boolean data)
-    {
-        boolean accept = true;
-
-        if (destination != null)
-        {
-            RtpChannel dst = RtpChannel.getChannel(destination);
-
-            if (dst != null)
-            {
-                RtpChannel src
-                    = (source == null) ? null : RtpChannel.getChannel(source);
-
-                accept
-                    = dst.rtpTranslatorWillWrite(
-                            data,
-                            buffer, offset, length,
-                            src);
-            }
-        }
-        return accept;
-    }
-
-    void askForKeyframes(Collection<Endpoint> endpoints)
-    {
-        for (Endpoint endpoint : endpoints)
-        {
-            for (RtpChannel channel : endpoint.getChannels(MediaType.VIDEO))
-                channel.askForKeyframes();
-        }
-    }
-
-    /**
-     * Initializes a new <tt>RtpChannel</tt> instance and adds it to the list of
-     * <tt>RtpChannel</tt>s of this <tt>Content</tt>. The new
-     * <tt>RtpChannel</tt> instance has an ID which is unique within the list of
-     * <tt>RtpChannel</tt>s of this <tt>Content</tt>.
-     *
-     * @param channelBundleId the ID of the channel-bundle that the created
-     * <tt>RtpChannel</tt> is to be a part of (or <tt>null</tt> if it is not to
-     * be a part of a channel-bundle).
-     * @param transportNamespace transport namespace that will used by new
-     * channel. Can be either {@link IceUdpTransportPacketExtension#NAMESPACE}
-     * or {@link RawUdpTransportPacketExtension#NAMESPACE}.
-     * @param initiator the value to use for the initiator field, or
-     * <tt>null</tt> to use the default value.
-     * @return the created <tt>RtpChannel</tt> instance.
-     * @throws Exception
-     */
-    public RtpChannel createRtpChannel(String channelBundleId,
-                                       String transportNamespace,
-                                       Boolean initiator)
-        throws Exception
-    {
-        RtpChannel channel = null;
-
-        do
-        {
-            String id = generateChannelID();
-
-            synchronized (channels)
-            {
-                if (!channels.containsKey(id))
-                {
-                    switch (getMediaType())
-                    {
-                    case AUDIO:
-                        channel = new AudioChannel(
-                                this, id, channelBundleId,
-                                transportNamespace, initiator);
-                        break;
-                    case DATA:
-                        /*
-                         * MediaType.DATA signals an SctpConnection, not an
-                         * RtpChannel.
-                         */
-                        throw new IllegalStateException("mediaType");
-                    case VIDEO:
-                        channel = new VideoChannel(
-                                this, id, channelBundleId,
-                                transportNamespace, initiator);
-                        break;
-                    default:
-                        channel = new RtpChannel(
-                            this, id, channelBundleId,
-                            transportNamespace, initiator);
-                        break;
-                    }
-                    channels.put(id, channel);
-                }
-            }
-        }
-        while (channel == null);
-
-        // Initialize channel
-        channel.initialize();
-
-        Videobridge videobridge = getConference().getVideobridge();
-
-        if (logger.isInfoEnabled())
-        {
-            /*
-             * The method Videobridge.getChannelCount() should better be
-             * executed outside synchronized blocks in order to reduce the risks
-             * of causing deadlocks.
-             */
-
-            logger.info(
-                    "Created channel " + channel.getID() + " of content "
-                        + getName() + " of conference " + conference.getID()
-                        + ". " + videobridge.getConferenceCountString());
-        }
-
-        return channel;
-    }
-
-    /**
-     * XXX REMOVE
-     * Returns a <tt>Channel</tt> of this <tt>Content</tt>, which has
-     * <tt>ssrc</tt> in its list of received SSRCs, or <tt>null</tt> in case no
-     * such <tt>Channel</tt> exists.
-     * @param ssrc the ssrc to search for.
-     * @return a <tt>Channel</tt> of this <tt>Content</tt>, which has
-     * <tt>ssrc</tt> in its list of received SSRCs, or <tt>null</tt> in case no
-     * such <tt>Channel</tt> exists.
-     */
-    public Channel findChannel(long ssrc)
-    {
-        // TODO we need to optimize the performance of this. We could use a
-        // simple Map as a Cache for this loop.
-        for (Channel channel : getChannels())
-        {
-            if (channel instanceof RtpChannel)
-            {
-                RtpChannel rtpChannel = (RtpChannel) channel;
-                for (int channelSsrc : rtpChannel.getReceiveSSRCs())
-                {
-                    if (ssrc == (0xffffffffL & channelSsrc))
-                        return channel;
-                }
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns a <tt>Channel</tt> of this <tt>Content</tt>, which has
-     * <tt>receiveSSRC</tt> in its list of received SSRCs, or <tt>null</tt> in
-     * case no such <tt>Channel</tt> exists.
-     *
-     * @param receiveSSRC the SSRC to search for.
-     * @return a <tt>Channel</tt> of this <tt>Content</tt>, which has
-     * <tt>receiveSSRC</tt> in its list of received SSRCs, or <tt>null</tt> in
-     * case no such <tt>Channel</tt> exists.
-     */
-    Channel findChannelByReceiveSSRC(long receiveSSRC)
-    {
-        for (Channel channel : getChannels())
-        {
-            //FIXME: fix instanceof
-            if(!(channel instanceof RtpChannel))
-                continue;
-
-            RtpChannel rtpChannel = (RtpChannel) channel;
-
-            for (int channelReceiveSSRC : rtpChannel.getReceiveSSRCs())
-            {
-                if (receiveSSRC == (0xFFFFFFFFL & channelReceiveSSRC))
-                    return channel;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Generates a new <tt>Channel</tt> ID which is not guaranteed to be unique.
-     *
-     * @return a new <tt>Channel</tt> ID which is not guaranteed to be unique
-     */
-    private String generateChannelID()
-    {
-        return
-            Long.toHexString(
-                    System.currentTimeMillis() + Proxy.RANDOM.nextLong());
-    }
-
-    /**
-     * Returns a <tt>Channel</tt> from the list of <tt>Channel</tt>s of this
-     * <tt>Content</tt> which has a specific ID.
-     *
-     * @param id the ID of the <tt>Channel</tt> to be returned
-     * @return a <tt>Channel</tt> from the list of <tt>Channel</tt>s of this
-     * <tt>Content</tt> which has the specified <tt>id</tt> if such a
-     * <tt>Channel</tt> exists; otherwise, <tt>null</tt>
-     */
-    public Channel getChannel(String id)
-    {
-        Channel channel;
-
-        synchronized (channels)
-        {
-            channel = channels.get(id);
-        }
-
-        // It seems the channel is still active.
-        if (channel != null)
-            channel.touch();
-
-        return channel;
-    }
-
-    /**
-     * Gets the number of <tt>Channel</tt>s of this <tt>Content</tt> that are
-     * not expired.
-     *
-     * @return the number of <tt>Channel</tt>s of this <tt>Content</tt> that are
-     * not expired.
-     */
-    public int getChannelCount()
-    {
-        int sz = 0;
-        Channel[] cs = getChannels();
-        if (cs != null && cs.length != 0)
-        {
-            for (int i = 0; i < cs.length; i++)
-            {
-                Channel c = cs[i];
-                if (c != null && !c.isExpired())
-                {
-                    sz++;
-                }
-            }
-        }
-        return sz;
-    }
-
-    /**
-     * Gets the <tt>Channel</tt>s of this <tt>Content</tt>.
-     *
-     * @return the <tt>Channel</tt>s of this <tt>Content</tt>
-     */
-    public Channel[] getChannels()
-    {
-        synchronized (channels)
-        {
-            Collection<Channel> values = channels.values();
-
-            return values.toArray(new Channel[values.size()]);
-        }
-    }
-
     /**
      * Gets the <tt>Conference</tt> which has initialized this <tt>Content</tt>.
      *
@@ -503,56 +246,17 @@ public class Content
                          * The places that are involved in this have been tagged
                          * with TAG(cat4-local-ssrc-hurricane).
                          */
-                        initialLocalSSRC = Videobridge.RANDOM.nextInt();
+                        initialLocalSSRC = Proxy.RANDOM.nextInt();
 
                         rtpTranslatorImpl.setLocalSSRC(initialLocalSSRC);
 
-                        rtcpFeedbackMessageSender
+                        rtcpFeedbackMessageSender  // Boven: ???
                             = rtpTranslatorImpl.getRtcpFeedbackMessageSender();
                     }
                 }
             }
             return rtpTranslator;
         }
-    }
-    
-    /**
-     *
-     * @param channel
-     */
-    public void fireChannelChanged(RtpChannel channel)
-    {
-        firePropertyChange(CHANNEL_MODIFIED_PROPERTY_NAME, channel, channel);
-    }
-
-    /**
-     * Tries to find an <tt>RtpChannel</tt> from this <tt>Content</tt> which
-     * has <tt>ssrc</tt> in one of its FID source groups.
-     * @param ssrc the SSRC to search for.
-     * @return an <tt>RtpChannel</tt> with <tt>ssrc</tt> in one of its FID
-     * source groups, or <tt>null</tt> if there is no such <tt>RtpChannel</tt>
-     * in this <tt>Content</tt>.
-     */
-    public RtpChannel findChannelByFidSsrc(long ssrc)
-    {
-        if (expired)
-            return null;
-
-        for (Channel channel : getChannels())
-        {
-            if (! (channel instanceof RtpChannel))
-            {
-                continue;
-            }
-            RtpChannel rtpChannel = (RtpChannel) channel;
-
-            if (rtpChannel.getFidPairedSsrc(ssrc) != -1)
-            {
-                return rtpChannel;
-            }
-        }
-
-        return null;
     }
 
     private static class RTPTranslatorWriteFilter
@@ -600,5 +304,21 @@ public class Content
             }
             return accept;
         }
+    }
+
+    @Override
+    public boolean accept(
+            MediaStream source,
+            byte[] buffer, int offset, int length,
+            MediaStream destination,
+            boolean data)
+    {
+        boolean accept = true;
+        
+        // TODO: Boven Add ACL here 
+        if (destination != null){   // Boven: ACL for transmission between streams. 
+            accept = true;
+        }
+        return accept;
     }
 }

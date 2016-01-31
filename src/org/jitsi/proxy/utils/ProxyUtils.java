@@ -350,6 +350,7 @@ public class ProxyUtils
             stream.setFormat(format);
 
             stream.setName(mediaName);
+            
             stream.setRTPTranslator(mediaService.createRTPTranslator());
 
             /* XXX if SENDRECV is set instead of SENDONLY or RECVONLY,
