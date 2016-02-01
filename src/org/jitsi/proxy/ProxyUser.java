@@ -29,6 +29,11 @@ import org.jitsi.util.Logger;
 import org.jitsi.proxy.utils.*;
 import org.jitsi.hammer.extension.*;
 import org.jitsi.hammer.stats.FakeUserStats;
+import org.jitsi.jirecon.EndpointInfo;
+import org.jitsi.jirecon.MediaDirection;
+import org.jitsi.jirecon.MediaType;
+import org.jitsi.jirecon.TaskEvent;
+import org.jitsi.jirecon.protocol.extension.MediaExtension;
 
 import net.java.sip.communicator.impl.protocol.jabber.jinglesdp.*;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.*;
@@ -178,7 +183,18 @@ public class ProxyUser implements PacketListener
      * this <tt>FakeUser</tt>
      */
     private FakeUserStats fakeUserStats;
+    
+    // TODO: handle EndpointInfo class on demand --haoqin
+    /**
+     * <tt>Endpoint</tt>s in the meeting.
+     */
+    // private final Map<String, EndpointInfo> endpoints
+    //		= new HashMap<String, EndpointInfo>();
 
+    // Substitute for the real endpoints above, SSRCs as values
+    private final Map<String, Map<MediaType, Long>> endpoints
+    	= new HashMap<String, Map<MediaType, Long>>();
+    
     /**
      * Instantiates a <tt>FakeUser</tt> with a default nickname that
      * will connect to the XMPP server contained in <tt>hostInfo</tt>.
@@ -251,7 +267,8 @@ public class ProxyUser implements PacketListener
         {
             public boolean accept(Packet packet)
             {
-                return (packet instanceof JingleIQ);
+            	// We will handle JingleIQ packets and Presence packets
+                return (packet instanceof JingleIQ || packet instanceof Presence);
             }
         });
 
@@ -680,49 +697,241 @@ public class ProxyUser implements PacketListener
         }
     }
 
-
-
     /**
-     * Callback function used when a JingleIQ is received by the XMPP connector.
-     * @param packet the packet received by the <tt>FakeUser</tt>
+     * @author haoqin
+     * 
+     * Callback function used when a JingleIQ packet or Presence packet
+     * is received by the XMPP connector.
+     * 
+     * @param packet the packet received by the <tt>ProxyUser</tt>
      */
     public void processPacket(Packet packet)
     {
-        JingleIQ jiq = (JingleIQ)packet;
-        ackJingleIQ(jiq);
-        switch(jiq.getAction())
+    	if (packet instanceof JingleIQ)
+    	{
+    		handleJingleIQ(packet);
+    	}
+    	else if (packet instanceof Presence)
+    	{
+    		handlePresence(packet);
+    	}
+//        JingleIQ jiq = (JingleIQ)packet;
+//        ackJingleIQ(jiq);
+//        switch(jiq.getAction())
+//        {
+//        case SESSION_INITIATE:
+//        	System.out.println("Boven-sessionInit:" + jiq.toXML());
+//            logger.info(this.nickname + " : Jingle session-initiate received");
+//            if(sessionInitiate == null)
+//            {
+//                sessionInitiate = jiq;
+//                acceptJingleSession();
+//            }
+//            else
+//            {
+//                //TODO FIXME It need to be changed if Jitsi-Hammer want to be used with Jitsi
+//                logger.info("but not processed (already got one)");
+//            }
+//            break;
+//        case ADDSOURCE:
+//        	System.out.println("Boven-addSrc:" + jiq.toXML());
+//            logger.info(this.nickname + " : Jingle addsource received");
+//            break;
+//        case REMOVESOURCE:
+//        	System.out.println("Boven-rmSrc:" + jiq.toXML());
+//            logger.info(this.nickname + " : Jingle addsource received");
+//            break;
+//        default:
+//        	System.out.println("Boven-unknown:" + jiq.toXML());
+//            logger.info(this.nickname + " : Unknown Jingle IQ received : "
+//                + jiq.toString());
+//            break;
+//        }
+    }
+
+    /**
+     * handle JingeIQ packets like SESSION_INIT, SOURCE_ADD, SOURCE_REMOVE etc.
+     * and logging information.
+     * 
+     * @param JingleIQ packet
+     */
+    private void handleJingleIQ(Packet packet)
+    {
+      JingleIQ jiq = (JingleIQ)packet;
+      ackJingleIQ(jiq);
+      switch(jiq.getAction())
+      {
+      case SESSION_INITIATE:
+      	System.out.println("Boven-sessionInit:" + jiq.toXML());
+          logger.info(this.nickname + " : Jingle session-initiate received");
+          if(sessionInitiate == null)
+          {
+              sessionInitiate = jiq;
+              acceptJingleSession();
+          }
+          else
+          {
+              //TODO FIXME It need to be changed if Jitsi-Hammer want to be used with Jitsi
+              logger.info("but not processed (already got one)");
+          }
+          break;
+      case ADDSOURCE:
+      	System.out.println("Boven-addSrc:" + jiq.toXML());
+          logger.info(this.nickname + " : Jingle addsource received");
+          break;
+      case REMOVESOURCE:
+      	System.out.println("Boven-rmSrc:" + jiq.toXML());
+          logger.info(this.nickname + " : Jingle addsource received");
+          break;
+      default:
+      	System.out.println("Boven-unknown:" + jiq.toXML());
+          logger.info(this.nickname + " : Unknown Jingle IQ received : "
+              + jiq.toString());
+          break;
+      }
+    }
+
+    /**
+     * @author haoqin
+     * 
+     * Handles Jingle Presence Packet, deal with information of endpoints
+     * like jid and ssrc.
+     * Mostly copied from handlePresencePacket in JingleSessionManager of
+     * Jirecon.
+     *
+     * @param Presence packet
+     */
+    private void handlePresence(Packet packet)
+    {
+    	Presence p = (Presence) packet;
+    	// TODO: Add class MediaProvider and MediaPacketExtension --haoqin
+    	PacketExtension packetExt = p.getExtension("http://estos.de/ns/mjs");
+    	final String name = "x";
+    	final String namespace = "http://jabber.org/protocol/muc#user";
+    	MUCUser userExt = (MUCUser) p.getExtension(name, namespace);
+    	
+    	/*
+         * In case of presence packet isn't sent by participant, so we can't get
+         * participant id from p.getFrom().
+         */ 
+        String participantJid = userExt.getItem().getJid();
+
+        /*
+         * Jitsi-meeting presence packet should contain participant jid and
+         * media packet extension
+         */
+        if (null == participantJid || null == packetExt)
+            return;
+        
+        /**
+         * 
+         * @author haoqin
+         * 
+         * TODO: After adding MediaProvider and MediaPacket Extension, handle this part
+         * on demand.
+         * 
+         */ 
+//        MediaExtension mediaExt = (MediaExtension) packetExt;
+        Map<MediaType, Long> ssrcs = new HashMap<MediaType, Long>();
+//        
+//        for (MediaType mediaType : new MediaType[] {MediaType.AUDIO, MediaType.VIDEO})
+//        {
+//            MediaDirection direction =
+//                MediaDirection.parseString(mediaExt.getDirection(mediaType
+//                    .toString()));
+//            
+//            if (direction.allowsSending())
+//            {
+//                ssrcs.put(mediaType,
+//                    Long.valueOf(mediaExt.getSsrc(mediaType.toString())));
+//            }
+//            
+//        }
+        
+        // Oh, it seems that some participant has left the MUC.
+        if (p.getType() == Presence.Type.unavailable)
         {
-        case SESSION_INITIATE:
-        	System.out.println("Boven-sessionInit:" + jiq.toXML());
-            logger.info(this.nickname + " : Jingle session-initiate received");
-            if(sessionInitiate == null)
+            removeEndpoint(participantJid);
+            // TODO: fix this part on demand @haoqin
+//            fireEvent(new TaskEvent(
+//                TaskEvent.Type.PARTICIPANT_LEFT));
+        }
+        // Otherwise we think that some new participant has joined the MUC.
+        else
+        {
+        	addOrUpdateEndpoint(participantJid, ssrcs);
+        	// TODO: fix this part on demand @haoqin
+//            if(addOrUpdateEndpoint(participantJid, ssrcs))
+//            {
+//                fireEvent(new TaskEvent(
+//                        TaskEvent.Type.PARTICIPANT_CAME));
+//            }
+        }
+    	
+    }
+    
+    /**
+     * @author haoqin
+     * 
+     * Remove participant id. Mainly copied from removeEndpoint method in
+     * JingleSessionManager class in Jirecon.
+     * 
+     * @param jid of participant we want to remove.
+     */
+    private void removeEndpoint(String jid)
+    {
+    	logger.info("Haoqin--Remove Endpoint: " + jid);
+    	
+    	synchronized (endpoints)
+    	{
+    		endpoints.remove(jid);
+    	}
+    }
+    
+    /**
+     * @author haoqin
+     * 
+     * Add or update endpoints information. Mainly copied from same method of
+     * JingleSessionManager in Jirecon.
+     * 
+     * @param jid of endpoint to be added or updated.
+     * @param ssrcs of media of endpoint
+     * @return whether the endpoint is added or not.
+     */
+    private boolean addOrUpdateEndpoint(String jid, Map<MediaType, Long> ssrcs)
+    {
+    	synchronized (endpoints)
+        {
+            boolean added = false;
+            // TODO: fix this part after EndpointInfo added on demand @haoqin
+//            EndpointInfo endpoint = endpoints.get(jid);
+//            if (endpoint == null)
+//            {
+//                endpoint = new EndpointInfo();
+//                added = true;
+//            }
+//            
+//            endpoint.setId(jid);
+//            for (MediaType mediaType : new MediaType[]
+//            { MediaType.AUDIO, MediaType.VIDEO })
+//            {
+//                endpoint.setSsrc(mediaType, ssrcs.get(mediaType));
+//            }
+
+            if (endpoints.containsKey(jid))
             {
-                sessionInitiate = jiq;
-                acceptJingleSession();
+            	logger.info("Haoqin--Update Endpoint: " + jid);
             }
             else
             {
-                //TODO FIXME It need to be changed if Jitsi-Hammer want to be used with Jitsi
-                logger.info("but not processed (already got one)");
+            	logger.info("Haoqin--Add Endpoint: " + jid);
             }
-            break;
-        case ADDSOURCE:
-        	System.out.println("Boven-addSrc:" + jiq.toXML());
-            logger.info(this.nickname + " : Jingle addsource received");
-            break;
-        case REMOVESOURCE:
-        	System.out.println("Boven-rmSrc:" + jiq.toXML());
-            logger.info(this.nickname + " : Jingle addsource received");
-            break;
-        default:
-        	System.out.println("Boven-unknown:" + jiq.toXML());
-            logger.info(this.nickname + " : Unknown Jingle IQ received : "
-                + jiq.toString());
-            break;
+            endpoints.put(jid, ssrcs);
+            added = true;
+            return added;
         }
     }
-
-
+    
     /**
      * This function simply create an ACK packet to acknowledge the Jingle IQ
      * packet <tt>packetToAck</tt>.
