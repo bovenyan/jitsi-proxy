@@ -804,6 +804,7 @@ public class ProxyUser implements PacketListener
     private void handlePresence(Packet packet)
     {
     	Presence p = (Presence) packet;
+    	logger.info("Haoqin--Presence Received: " + p.toXML());
     	// TODO: Add class MediaProvider and MediaPacketExtension --haoqin
     	PacketExtension packetExt = p.getExtension("http://estos.de/ns/mjs");
     	final String name = "x";
