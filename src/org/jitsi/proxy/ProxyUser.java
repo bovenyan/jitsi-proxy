@@ -702,7 +702,7 @@ public class ProxyUser implements PacketListener
      */
     public void processPacket(Packet packet)
     {
-    	logger.info("Haoqin--Processing packet: " + packet.toXML());
+    	//logger.info("Haoqin--Processing packet: " + packet.toXML());
     	if (packet instanceof JingleIQ)
     	{
     		handleJingleIQ(packet);
@@ -758,8 +758,8 @@ public class ProxyUser implements PacketListener
       switch(jiq.getAction())
       {
       case SESSION_INITIATE:
-    	  System.out.println("Boven-sessionInit:" + jiq.toXML());
-          logger.info(this.nickname + " : Jingle session-initiate received");
+    	  System.out.println(this.nickname + "Boven-sessionInit:" + jiq.toXML());
+          //logger.info(this.nickname + " : Jingle session-initiate received");
           if(sessionInitiate == null)
           {
               sessionInitiate = jiq;
@@ -772,17 +772,16 @@ public class ProxyUser implements PacketListener
           }
           break;
       case ADDSOURCE:
-    	  System.out.println("Boven-addSrc:" + jiq.toXML());
-          logger.info(this.nickname + " : Jingle addsource received");
+    	  System.out.println(this.nickname + "Boven-addSrc:" + jiq.toXML());
+          //logger.info(this.nickname + " : Jingle addsource received");
           break;
       case REMOVESOURCE:
-    	  System.out.println("Boven-rmSrc:" + jiq.toXML());
-          logger.info(this.nickname + " : Jingle addsource received");
+    	  System.out.println(this.nickname + "Boven-rmSrc:" + jiq.toXML());
+          //logger.info(this.nickname + " : Jingle addsource received");
           break;
       default:
-    	  System.out.println("Boven-unknown:" + jiq.toXML());
-          logger.info(this.nickname + " : Unknown Jingle IQ received : "
-              + jiq.toString());
+    	  System.out.println(this.nickname + "Boven-unknown:" + jiq.toXML());
+          //logger.info(this.nickname + " : Unknown Jingle IQ received : " + jiq.toString());
           break;
       }
     }
@@ -800,8 +799,6 @@ public class ProxyUser implements PacketListener
     private void handlePresence(Packet packet)
     {
     	Presence p = (Presence) packet;
-    	logger.info("Haoqin--Presence Received: " + p.toXML());
-    	System.out.println("Haoqin--Presence Received: " + p.toXML());
     	// TODO: Add class MediaProvider and MediaPacketExtension --haoqin
     	PacketExtension packetExt = p.getExtension("http://estos.de/ns/mjs");
     	final String name = "x";
@@ -812,6 +809,7 @@ public class ProxyUser implements PacketListener
          * In case of presence packet isn't sent by participant, so we can't get
          * participant id from p.getFrom().
          */ 
+    	// Can get nickname of participant by userExt.getItem().getNick() if necessary
         String participantJid = userExt.getItem().getJid();
 
         /*
@@ -879,7 +877,6 @@ public class ProxyUser implements PacketListener
     private void removeEndpoint(String jid)
     {
     	logger.info("Haoqin--Remove Endpoint: " + jid);
-    	System.out.println("Haoqin--Remove Endpoint: " + jid);
     	
     	synchronized (endpoints)
     	{
@@ -920,12 +917,10 @@ public class ProxyUser implements PacketListener
             if (endpoints.containsKey(jid))
             {
             	logger.info("Haoqin--Update Endpoint: " + jid);
-            	System.out.println("Haoqin--Update Endpoint: " + jid);
             }
             else
             {
             	logger.info("Haoqin--Add Endpoint: " + jid);
-            	System.out.println("Haoqin--Add Endpoint: " + jid);
             }
             endpoints.put(jid, ssrcs);
             added = true;
