@@ -29,11 +29,6 @@ import org.jitsi.util.Logger;
 import org.jitsi.proxy.utils.*;
 import org.jitsi.hammer.extension.*;
 import org.jitsi.hammer.stats.FakeUserStats;
-import org.jitsi.jirecon.EndpointInfo;
-import org.jitsi.jirecon.MediaDirection;
-import org.jitsi.jirecon.MediaType;
-import org.jitsi.jirecon.TaskEvent;
-import org.jitsi.jirecon.protocol.extension.MediaExtension;
 
 import net.java.sip.communicator.impl.protocol.jabber.jinglesdp.*;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.*;
