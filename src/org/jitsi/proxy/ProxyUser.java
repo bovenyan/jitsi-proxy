@@ -702,6 +702,7 @@ public class ProxyUser implements PacketListener
      */
     public void processPacket(Packet packet)
     {
+    	logger.info("Haoqin--Processing packet: " + packet.toXML());
     	if (packet instanceof JingleIQ)
     	{
     		handleJingleIQ(packet);
