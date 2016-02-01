@@ -758,7 +758,7 @@ public class ProxyUser implements PacketListener
       switch(jiq.getAction())
       {
       case SESSION_INITIATE:
-      	System.out.println("Boven-sessionInit:" + jiq.toXML());
+    	  System.out.println("Boven-sessionInit:" + jiq.toXML());
           logger.info(this.nickname + " : Jingle session-initiate received");
           if(sessionInitiate == null)
           {
@@ -772,15 +772,15 @@ public class ProxyUser implements PacketListener
           }
           break;
       case ADDSOURCE:
-      	System.out.println("Boven-addSrc:" + jiq.toXML());
+    	  System.out.println("Boven-addSrc:" + jiq.toXML());
           logger.info(this.nickname + " : Jingle addsource received");
           break;
       case REMOVESOURCE:
-      	System.out.println("Boven-rmSrc:" + jiq.toXML());
+    	  System.out.println("Boven-rmSrc:" + jiq.toXML());
           logger.info(this.nickname + " : Jingle addsource received");
           break;
       default:
-      	System.out.println("Boven-unknown:" + jiq.toXML());
+    	  System.out.println("Boven-unknown:" + jiq.toXML());
           logger.info(this.nickname + " : Unknown Jingle IQ received : "
               + jiq.toString());
           break;
@@ -801,6 +801,7 @@ public class ProxyUser implements PacketListener
     {
     	Presence p = (Presence) packet;
     	logger.info("Haoqin--Presence Received: " + p.toXML());
+    	System.out.println("Haoqin--Presence Received: " + p.toXML());
     	// TODO: Add class MediaProvider and MediaPacketExtension --haoqin
     	PacketExtension packetExt = p.getExtension("http://estos.de/ns/mjs");
     	final String name = "x";
@@ -878,6 +879,7 @@ public class ProxyUser implements PacketListener
     private void removeEndpoint(String jid)
     {
     	logger.info("Haoqin--Remove Endpoint: " + jid);
+    	System.out.println("Haoqin--Remove Endpoint: " + jid);
     	
     	synchronized (endpoints)
     	{
@@ -918,10 +920,12 @@ public class ProxyUser implements PacketListener
             if (endpoints.containsKey(jid))
             {
             	logger.info("Haoqin--Update Endpoint: " + jid);
+            	System.out.println("Haoqin--Update Endpoint: " + jid);
             }
             else
             {
             	logger.info("Haoqin--Add Endpoint: " + jid);
+            	System.out.println("Haoqin--Add Endpoint: " + jid);
             }
             endpoints.put(jid, ssrcs);
             added = true;
