@@ -293,7 +293,7 @@ public class Main
             "Jitsi-Proxy",
             numberOfLusers,
             numberOfRusers);
-
+        
 
         //Cleanly stop the proxy when the program shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable()

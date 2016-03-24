@@ -9,6 +9,7 @@ import org.jivesoftware.smack.provider.*;
 
 import net.java.sip.communicator.impl.osgi.framework.launch.*;
 import net.java.sip.communicator.impl.protocol.jabber.extensions.jingle.*;
+// import net.java.sip.communicator.util.ServiceUtils;
 
 //import org.jitsi.hammer.FakeUser;
 //import org.jitsi.hammer.Framework;
@@ -19,6 +20,8 @@ import org.jitsi.hammer.extension.*;
 import org.jitsi.proxy.ProxyUser;
 //import org.jitsi.hammer.extension.*;
 import org.jitsi.proxy.utils.MediaDeviceChooser;
+import org.jitsi.service.libjitsi.LibJitsi;
+import org.jitsi.service.neomedia.MediaService;
 import org.jitsi.util.Logger;
 
 import java.util.*;
@@ -63,7 +66,25 @@ public class Proxy {
      * <tt>FakeUser</tt> to choose their <tt>MediaDevice</tt>
      */
     private final MediaDeviceChooser mediaDeviceChooser;
-
+    
+    /**
+     * The <tt>Content</tt>s of this <tt>Proxy</tt>.
+     */
+    private final List<Content> contents = new LinkedList<>();
+    
+    /**
+     * TODO: These should be shared accross Proxys
+     * @return
+     */
+    MediaService getMediaService()
+    {
+    	// TODO: Use osgi to get media service
+        return LibJitsi.getMediaService();
+    }
+    
+    public static final Random RANDOM = new Random();
+    
+    
     /**
      * The <tt>org.osgi.framework.launch.Framework</tt> instance which
      * represents the OSGi instance launched by this <tt>ComponentImpl</tt>.
@@ -288,6 +309,10 @@ public class Proxy {
     
     private void startUsersAnonymous(int wait)
     {
+    	logger.info("Creating the contents");
+    	getOrCreateContent("audio");
+    	getOrCreateContent("video");
+    	
         logger.info("Starting the Proxy : starting all "
                             + "ProxyUser with anonymous login");
         try
@@ -349,5 +374,39 @@ public class Proxy {
 
         this.started = false;
         logger.info("The Proxy has been correctly stopped");
+    }
+    
+    /**
+     * Gets a <tt>Content</tt> of this <tt>Proxy</tt> which has a specific
+     * name. If a <tt>Content</tt> of this <tt>Proxy</tt> with the
+     * specified <tt>name</tt> does not exist at the time the method is invoked,
+     * the method initializes a new <tt>Content</tt> instance with the specified
+     * <tt>name</tt> and adds it to the list of <tt>Content</tt>s of this
+     * <tt>Proxy</tt>.
+     *
+     * @param name the name of the <tt>Content</tt> which is to be returned
+     * @return a <tt>Content</tt> of this <tt>Proxy</tt> which has the
+     * specified <tt>name</tt>
+     */    
+    public Content getOrCreateContent(String name)
+    {
+        Content content;
+
+        synchronized (contents)
+        {
+            for (Content aContent : contents)
+            {
+                if (aContent.getName().equals(name))
+                {
+                    // aContent.touch(); // It seems the content is still active.
+                    return aContent;
+                }
+            }
+
+            content = new Content(this, name);
+            contents.add(content);
+        }
+
+        return content;
     }
 }
